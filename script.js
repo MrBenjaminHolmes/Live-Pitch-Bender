@@ -2,8 +2,9 @@
 let midiAccess = null;
 let midiOutput = null;
 let gamepadIndex = null;
-let pitchBendValue = 8192; // Center pitch bend
-let sustainPedalValue = 0; // Sustain pedal value (0 = off, 127 = on)
+let pitchBendValue = 8192; 
+modValue = 0;
+let sustainPedalValue = 0; 
 let midiInput = null;
 
 async function connectMIDI() {
@@ -13,14 +14,14 @@ async function connectMIDI() {
         const inputs = Array.from(midiAccess.inputs.values());
 
         if (outputs.length > 0) {
-            midiOutput = outputs[0]; // Get the first available output
+            midiOutput = outputs[0]; 
             document.getElementById('status').textContent = 'Status: MIDI connected';
         } else {
             document.getElementById('status').textContent = 'Status: No MIDI output devices found';
         }
 
         if (inputs.length > 0) {
-            midiInput = inputs[0]; // Get the first available input
+            midiInput = inputs[0]; 
             midiInput.onmidimessage = handleMIDIMessage;
             document.getElementById('status').textContent += ', MIDI input connected';
         } else {
@@ -47,49 +48,57 @@ function connectController() {
 function updateGamepad() {
     const gamepads = navigator.getGamepads();
     if (gamepadIndex !== null && gamepads[gamepadIndex]) {
-        const joystickY = gamepads[gamepadIndex].axes[1]; // Y-axis of the left joystick
-
-        // Log joystick Y-axis value
-        console.log(`Joystick Y-axis: ${joystickY}`);
-
-        // Invert the joystick Y-axis mapping for pitch bend
-        // Joystick value range is typically from -1 to 1
-        // Map [-1, 1] to [0, 16383]
+        const joystickY = gamepads[gamepadIndex].axes[3];
+        const joystickX = gamepads[gamepadIndex].buttons[7].value;
+        
         let newPitchBendValue = Math.floor((1 - joystickY) * 8192); // Swap range [-1, 1] to [0, 16383]
+        let newModValue = Math.floor((joystickX) * 127); // Swap range [-1, 1] to [0, 127]
 
-        // Cap the pitch bend value to be within the MIDI range
         newPitchBendValue = Math.max(0, Math.min(16383, newPitchBendValue));
-
-        // Only send a pitch bend message if the value has changed
+        newModValue = Math.max(0, Math.min(127, newModValue)); // Ensure it stays within MIDI range [0, 127]
+        console.log(newModValue)
+        // Send pitch bend value if it has changed
         if (pitchBendValue !== newPitchBendValue) {
             pitchBendValue = newPitchBendValue;
 
             if (midiOutput) {
-                const lsb = pitchBendValue & 0x7F; // Least significant byte
-                const msb = (pitchBendValue >> 7) & 0x7F; // Most significant byte
-                midiOutput.send([0xE0, lsb, msb]); // Channel 1 Pitch Bend
+                const lsb = pitchBendValue & 0x7F; 
+                const msb = (pitchBendValue >> 7) & 0x7F;
+                midiOutput.send([0xE0, lsb, msb]); 
+            }
+        }
+
+        // Send modulation value if it has changed
+        if (modValue !== newModValue) {
+            modValue = newModValue;
+
+            if (midiOutput) {
+                const controlChangeChannel = 1; // MIDI channel (1-16), adjust as needed
+                const controlChangeMessage = [0xB0 + (controlChangeChannel - 1), 1, modValue]; // Control change message, using controller number 1
+                midiOutput.send(controlChangeMessage);
             }
         }
     }
 }
+
 
 function handleMIDIMessage(message) {
     const [status, note, velocity] = message.data;
     console.log(`MIDI Message: ${message.data}`);
 
     if (status === 0x90 && velocity > 0) {
-        // Note on
+
         if (midiOutput) {
             midiOutput.send([status, note, velocity]);
         }
     } else if (status === 0x80 || (status === 0x90 && velocity === 0)) {
-        // Note off
+
         if (midiOutput) {
             midiOutput.send([status, note, 0]);
         }
-    } else if (status === 0xB0) {
-        // Control Change (for sustain pedal or other controls)
-        if (note === 0x40) { // Sustain pedal (CC 64)
+    } else if (status === 0xB0) { 
+
+        if (note === 0x40) { 
             sustainPedalValue = velocity;
             console.log(`Sustain Pedal Value: ${sustainPedalValue}`);
             // Send sustain pedal message
