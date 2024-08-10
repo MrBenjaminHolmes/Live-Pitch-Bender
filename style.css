@@ -1,0 +1,127 @@
+*{
+    font-family: "Montserrat", sans-serif;
+}
+
+html,body{
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: rgb(31, 31, 31);
+}
+
+
+.ui {
+  display: flex;
+  width: 80%;
+}
+
+.mod, .pitch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#modSlider {
+  width: 200px;
+  color: #455EB5;
+  
+}
+
+#pitchGrid {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 2px rgb(46, 46, 46) solid;
+  background-color: lightgray;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+
+}
+
+#pointer {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: rgb(70, 59, 219);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
+h1{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    margin: 0;
+    background-color: rgb(70, 59, 219);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    color: white;
+    margin-bottom: 50px;
+}
+
+.btnCont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.midiConnect,.xboxConnect{
+  display: flex;
+}
+
+
+button {
+  background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  border: rgb(112, 112, 112) solid 2px;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 500;
+  height: 4rem;
+  padding: 0 1.6rem;
+  text-align: center;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+  transition: all .5s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+button:hover {
+  box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+  transition-duration: .2s;
+}
+
+@media (min-width: 768px) {
+  button {
+    padding: 0 2.6rem;
+  }
+}
+
+p{
+  color: white;
+}
+
+input{
+    scale: 2;
+    margin-left: 25px;
+}
+
+#modSlider{
+  margin-top: 190px;
+  rotate: 270deg;
+  align-self: center;
+}
+
+#pitchGrid{
+  border-radius: 10%;
+  scale: 1.5;
+  margin-top: 100px;
+}

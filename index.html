@@ -2,10 +2,39 @@
 <html>
 <head>
     <title>MIDI Control with Xbox Controller</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="connect">Connect MIDI and Controller</button>
-    <p id="status">Status: Not connected</p>
+    <h1>MIDI PITCH BENDER</h1>
+    <div class="btnCont">
+        <button id="connect">Connect</button>
+        <div class="midiConnect">
+            <p>keyboard:</p>
+            <input id="keyboard" class="checkbox" name="keyboard" type="checkbox"  disabled="1"  />
+        </div>
+        <div class="xboxConnect">
+            <p>Controller:</p>
+            <input class="checkbox" id="xbox" name="xbox" type="checkbox" disabled="1" />
+        </div>
+    </div>
+    <div class="ui">
+        <div class="mod">
+            <p>Modulation</p>
+            <input type="range" id="modSlider" min="0" max="127" value="0" disabled="1"> 
+        </div>
+        <div class="pitch">
+            <p>Pitch Bend</p>
+            <div id="pitchGrid">
+                <div id="pointer"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+   
 
     <script src="script.js"></script>
 </body>
