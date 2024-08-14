@@ -4,4 +4,4 @@ Live Pitch Bender is a real-time pitch-bending audio plugin that allows musician
 
 🎹 Made For the Yammaha PSR-E353 🎹  
 
-## **[Try Me 🎹](https://mrfarmerbon.github.io/Live-Pitch-Bender/)**
+## **[Try Me 🎹](https://MrBenjaminHolmes.github.io/Live-Pitch-Bender/)**
